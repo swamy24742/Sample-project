@@ -1,0 +1,76 @@
+<div class="cb-tag-container position-relative">
+    <div>
+        <span class="cb-tag-placeholder" *ngIf="claimsConfig.isGlobal">
+            <span>
+                Tag Treaty
+            </span>
+        </span>
+         <span class="cb-tag-placeholder" *ngIf="!claimsConfig.isGlobal">
+            <span *ngIf="claimsConfig.claimData.taggedClaims.length === 0">
+                Tag Treaty
+            </span>
+            <span *ngIf="claimsConfig.claimData.taggedClaims.length > 0">
+                <span *ngIf="claimsConfig.claimData.taggedClaims.length === 1" class="cb-single-claim">
+                    {{claimsConfig.claimData.taggedClaims[0].riAgency+" - "+claimsConfig.claimData.taggedClaims[0].treatyName}}
+                </span>
+                <span *ngIf="claimsConfig.claimData.taggedClaims.length > 1">
+                    <span class="cb-multi-claim">
+                        {{claimsConfig.claimData.taggedClaims[0].riAgency+" - "+claimsConfig.claimData.taggedClaims[0].treatyName}}
+                    </span>
+                    <span class="cb-more-claims" (click)="toggleClaim();$event.stopPropagation();">
+                        & {{(claimsConfig.claimData.taggedClaims.length - 1)}} more
+                    </span>
+                </span>
+            </span>
+        </span>
+        <img (click)="toggleClaim();$event.stopPropagation();" src="assets/Icons/down.svg" class="cb-tag-icon" alt="">
+    </div>
+    <div [hidden]="!claimsConfig.showTag" class="cb-tag-detail {{claimsConfig.claimClass}}" style="z-index:1000;" (click)="$event.stopPropagation();">
+        <div class="row no-gutters">
+            <div class="col-md-12 my-3 position-relative">
+                <input class="cb-tag-search" type="text" [(ngModel)]="searchTerm"
+                    placeholder="Search by RI Agency or Treaty Name" />
+            <img *ngIf="searchTerm.length > 0" (click)="clearSearch(); $event.stopPropagation();" src="assets/Icons/close.svg" class="cb-cross-icon" alt="">
+            </div>
+            <!-- <pre>
+                {{ claimsConfig.claimData.taggedClaims | json }}
+             </pre> -->
+            <div class="col-md-12 cb-treaty-list-sec pb-2">
+                <div class="row no-gutters">
+                    <div class="col-md-12 cb-treaty-list" *ngFor="let item of claimsLists | common : 'filterText': searchTerm; let index = index">
+                        <div class="row no-gutters cb-checkbox-sec pb-1" *ngIf="showClaimsTag(item)">
+                            <div class="col-md-1">
+                                <input [disabled]="(isDisabled || !hasValidPermission)" type="checkbox" (change)="onCheckBoxChange($event, item)" name="{{item.riAgency}}" value="">
+                            </div>
+                            <div class="col-md-11">
+                                <div class="cb-treaty-detail pl-1">{{item.riAgency+" - "+item.treatyName}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 cb-treaty-checked-list-sec pt-3 pb-2" *ngIf="claimsConfig.claimData.taggedClaims.length > 0 || taggedClaimsMaster.length > 0" >
+                <div class="row no-gutters">
+                    <div class="col-md-12 cb-treaty-list" *ngFor="let item of claimsConfig.claimData.taggedClaims; let index = index">
+                        <div class="row no-gutters cb-checkbox-sec pb-1">
+                            <div class="col-md-1">
+                                <input type="checkbox" [disabled]="!hasValidPermission" checked (change)="onCheckedBoxChange($event, item)" name="{{item.riAgency}}" value="">
+                            </div>
+                            <div class="col-md-11">
+                                <div class="cb-treaty-detail pl-1">{{item.riAgency+" - "+item.treatyName}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 py-1 pr-3">
+                        <div class="float-right" *ngIf="hasValidPermission">
+                            <button type="button" class="btn cb-btn-micro cb-btn-cancel cb-btn-light" data-dismiss="modal"
+                                (click)="handleClear()">Cancel</button>
+                            <button type="button" class="btn cb-btn-micro cb-btn-save cb-btn-secondary ml-2"
+                                (click)="triggerTagging()">{{ taggedClaimsMaster.length > 0 ? 'Update' : 'Save'}}</button>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </div>
+</div>

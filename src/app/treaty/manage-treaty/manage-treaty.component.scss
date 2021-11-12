@@ -1,0 +1,5 @@
+@import 'variables';
+
+input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
+    border: 1px solid $theme-red;
+}

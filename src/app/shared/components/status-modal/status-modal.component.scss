@@ -1,0 +1,29 @@
+@import 'variables';
+
+.cb-status-title{
+    font-size: 22px;
+    font-weight: bold;
+    color: $theme-dark-blue;
+    margin-bottom: 0;
+}
+
+.cb-status-txt{
+    font-size: 16px;
+    font-weight: bold;
+    color: $theme-dark-blue;
+}
+
+.cb-status-icon{
+    width:100px; 
+    height: 100px;
+    cursor: pointer;
+  }
+
+.cb-status-content{
+    padding-bottom: 80px;
+    padding-top: 50px;
+}
+
+.cb-status{
+    padding-top: 7%;
+}

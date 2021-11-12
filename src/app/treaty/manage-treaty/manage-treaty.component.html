@@ -1,0 +1,169 @@
+<div class="modal-header">
+    <h2 class="modal-title cb-modal-title">{{title}}</h2>
+    <button type="button" class="close cb-no-border" data-dismiss="modal" (click)="closeModal()">
+        <span class="cb-modal-close" aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+
+    <form [formGroup]="treatyForm" id="treatyForm">
+
+        <div class="row">
+            <div class="col">
+                <div>
+                    <label class="cb-required"> RI Agency </label>
+                </div>
+                <div class="input-group">
+                    <!-- input box -->
+                    <input class="" type="text" name="riAgency" id="riAgency" placeholder="Enter RI Agency"
+                        [readonly]="treatyConfig.isEditMode" formControlName="riAgency" maxlength="5" />
+                    <div
+                        *ngIf="treatyForm.controls['riAgency'].invalid && treatyForm.controls['riAgency'].hasError && (treatyForm.controls['riAgency'].dirty || treatyForm.controls['riAgency'].touched)">
+                        <span class="cb-validation-err"
+                            *ngIf="treatyForm.controls['riAgency'].hasError('minlength')">RIAgency should be 5
+                            characters</span>
+                        <span class="cb-validation-err"
+                            *ngIf="treatyForm.controls['riAgency'].hasError('required')">RIAgency required</span>
+                    </div>
+                    <span class="cb-validation-err"
+                        *ngIf="treatyConfig.isDuplicateError && (treatyForm.controls['riAgency'].value === treatyData.riAgency)">Treaty
+                        details already available for {{treatyData.riAgency}}. Please try a different one.</span>
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    <label class="cb-required"> Ceded No </label>
+                </div>
+
+                <div class="input-group">
+                    <!-- input box -->
+                    <input class="" type="text" name="cededNo" placeholder="Enter Ceded No" formControlName="cededNo"
+                        maxlength="4" />
+                    <div
+                        *ngIf="treatyForm.controls['cededNo'].invalid && treatyForm.controls['cededNo'].hasError && (treatyForm.controls['cededNo'].dirty || treatyForm.controls['cededNo'].touched)">
+                        <span class="cb-validation-err"
+                            *ngIf="treatyForm.controls['cededNo'].hasError('minlength')">CededNo should be 4
+                            characters.</span>
+                        <span class="cb-validation-err"
+                            *ngIf="treatyForm.controls['cededNo'].hasError('required')">CededNo required</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div>
+                    <label class="cb-required"> Treaty Name/Reinsurer Name(FAC) </label>
+                </div>
+                <div class="input-group">
+                    <!-- input box -->
+                    <input class="" type="text" name="treatyName" id="treatyName" placeholder="Enter Treaty Name"
+                        formControlName="treatyName" maxlength="100" />
+                    <span *ngIf="!treatyForm.controls['treatyName'].valid && treatyForm.controls['treatyName']?.touched"
+                        class="cb-validation-err">Treaty Name required</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col mt-3 col-lg-6">
+                <div>
+                    <label class="cb-required"> Calculation Method </label>
+                </div>
+                <div class="cb-input-group">
+                    <select class="cb-select" (change)="changeCalculationType()" name="calculationMethod"
+                        id="calculationMethod" formControlName="calculatedBy">
+                        <option *ngFor="let cl of calculationType" [ngValue]="cl.key">{{cl.value}}</option>
+                    </select>
+                    <span
+                        *ngIf="!treatyForm.controls['calculatedBy'].valid && treatyForm.controls['calculatedBy']?.touched"
+                        class="cb-validation-err">Calculation Method required</span>
+                </div>
+
+            </div>
+
+            <div class="col mt-3 col-lg-6">
+                <div>
+                    <label class="cb-required"> Agreement Type </label>
+                </div>
+                <div class="cb-input-group">
+                    <select class="cb-select" name="agreementType" id="agreementType" formControlName="agreementType">
+                        <option *ngFor="let ag of agreementType" [value]="ag.typeCode">
+                            {{(ag.typeCode !== "") ? (ag.typeCode+" - "+ag.description) : ag.description}}
+                        </option>
+                    </select>
+                    <span
+                        *ngIf="!treatyForm.controls['agreementType'].valid && treatyForm.controls['agreementType']?.touched"
+                        class="cb-validation-err">Agreement Type required</span>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div>
+                    <label> Trading Partner </label>
+                </div>
+                <div class="input-group">
+                    <!-- input box -->
+                    <input class="" type="text" name="tradingPartner" id="tradingPartner"
+                        placeholder="Enter Trading Partner" formControlName="tradingPartner" maxlength="40" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <div>
+                    <label [ngClass]="{'cb-required' : !isBorisCalc}"> Effective Date </label>
+                </div>
+                <div class="input-group position-relative">
+                    <!-- input box -->
+                    <input type="text" class="cb-date" name="effectiveDate" id="effectiveDate" placeholder="MM/DD/YYYY"
+                        angular-mydatepicker #dpEffectiveDate="angular-mydatepicker" formControlName="effectiveDate"
+                        [options]="effectiveDateOptions" (dateChanged)="onEffectiveDateChanged($event)" readonly
+                        (click)="dpEffectiveDate.toggleCalendar()" />
+                    <img *ngIf="treatyForm.value.effectiveDate" src="assets/Icons/close.svg"
+                        class="cb-icon cb-date-cross-icon" (click)="dpEffectiveDate.clearDate()" alt="">
+                    <img src="assets/Icons/cal.svg" (click)="dpEffectiveDate.toggleCalendar()"
+                        class="cb-icon cb-calendar-icon" alt="">
+                    <!-- <div *ngIf="treatyForm.hasError('notValid')">Not valid</div> -->
+                    <span
+                        *ngIf="!treatyForm.controls['effectiveDate'].valid && treatyForm.controls['effectiveDate']?.touched"
+                        class="cb-validation-err">Effective Date required</span>
+                </div>
+
+            </div>
+            <div class="col">
+                <div>
+                    <label [ngClass]="{'cb-required' : !isBorisCalc}"> Expiry Date </label>
+                </div>
+                <div class="input-group position-relative">
+                    <!-- input box -->
+                    <input type="text" class="cb-date" name="expiryDate" id="expiryDate"
+                        placeholder="MM/DD/YYYY" angular-mydatepicker #dpExpiryDate="angular-mydatepicker"
+                        formControlName="expirationDate" [options]="expiryDateOptions"
+                        (dateChanged)="onDateChanged($event)" readonly (click)="dpExpiryDate.toggleCalendar()" />
+                    <img *ngIf="treatyForm.value.expirationDate" src="assets/Icons/close.svg"
+                        class="cb-icon cb-date-cross-icon" (click)="dpExpiryDate.clearDate()" alt="">
+                    <img src="assets/Icons/cal.svg" (click)="dpExpiryDate.toggleCalendar()"
+                        class="cb-icon cb-calendar-icon" alt="">
+                    <span
+                        *ngIf="!treatyForm.controls['expirationDate'].valid && treatyForm.controls['expirationDate']?.touched"
+                        class="cb-validation-err">Expiry Date required</span>
+                    <span class="cb-validation-err" *ngIf="ispastExpiryDate">Expiry date should be greater than
+                        effective date</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer position-relative">
+    <p *ngIf="treatyConfig.isEditMode" class="cb-reset-link" (click)="resetModal()">Reset to Default</p>
+    <button type="button" class="btn cb-btn cb-btn-cancel cb-btn-light" data-dismiss="modal"
+        (click)="closeModal()">Cancel</button>
+    <button
+        [disabled]="treatyForm.invalid || (treatyConfig.isDuplicateError && treatyForm.controls['riAgency'].value === treatyData.riAgency) || ispastExpiryDate"
+        type="button" class="btn cb-btn cb-btn-save cb-btn-secondary ml-2"
+        (click)="saveModal()">{{actionButtonTitle}}</button>
+</div>

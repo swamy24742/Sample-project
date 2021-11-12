@@ -1,0 +1,35 @@
+@import 'variables';
+
+.cb-session-timer{
+    position: fixed;
+    width: 28%;
+    height: 100px;
+    right: 1%;
+    bottom: 2.5%;
+    border-radius: 8px;
+    border: 1px solid $theme-dark-blue;
+    background: $theme-white;
+}
+
+.cb-timer-icon{
+    font-size: 66px;
+    text-align: center;
+    color: $theme-dark-blue;
+}
+
+.cb-timer-label{
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.cb-timer{
+    font-size: 30px;
+    padding-left: 28%;
+    font-weight: bold;
+    color: $theme-dark-blue;
+}
+
+.cb-expired{
+    font-size: 20px;
+    padding-left: 5%;
+    padding-top: 3%;
+}

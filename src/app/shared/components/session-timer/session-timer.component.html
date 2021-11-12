@@ -1,0 +1,11 @@
+<div *ngIf="showTimer" class="cb-session-timer">
+    <div class="row pt-3 px-4">
+        <div class="col-md-3">
+            <i class="fa fa-clock-o cb-timer-icon" alt=""></i>
+        </div>
+        <div class="col-md-9">
+            <div class="cb-timer-label">Your session will expire in</div>
+            <div class="cb-timer" [ngClass]="{'cb-expired' : (sec === 0)}">{{sec !== 0 ? (sec+'s') : 'Session Expired !'}}</div>
+        </div>
+    </div>
+</div>

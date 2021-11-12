@@ -1,0 +1,17 @@
+<div class="cb-layout pb-2">
+    <div class="row text-center">
+        <div class="col-md-8 offset-md-2 cb-access-error">
+            <p *ngIf="page === 'Access Denied'" class="cb-error-msg">You don't have access to this application. Please contact the administrator.</p>
+            <p *ngIf="page === 'Invalid Access'" class="cb-error-msg">You don't have access to this page. Please contact your administrator.</p>
+            <p *ngIf="page === 'Generic Error'" class="cb-error-msg">Something went wrong. Please try again later.</p>
+            <div *ngIf="page === 'Logged Out'">
+                <p class="cb-error-msg">You have successfully logged out from the application.</p>
+                <span class="cb-login-label">Click <span (click)="handleLogin();" class="cb-login-link">here</span> to login.</span>
+            </div>
+            <div *ngIf="page === 'Session Expired'">
+                <p class="cb-error-msg">You session has been expired.</p>
+                <span class="cb-login-label">Click <span (click)="handleLogin();" class="cb-login-link">here</span> to re-login.</span>
+            </div>
+        </div>
+    </div>
+</div>

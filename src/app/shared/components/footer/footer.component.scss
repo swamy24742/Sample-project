@@ -1,0 +1,29 @@
+@import 'variables';
+
+.cb-footer-container{
+    width: 100%;
+    height: 90px;
+    background: $theme-white;
+    border: 1px solid $theme-gray;
+}
+
+.cb-footer-content{
+    padding: 0 20px;
+    margin-top: 12px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.cb-footer-main{
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: $theme-light-blue-min;
+}
+
+.cb-footer-sub{
+    margin-bottom: 0;
+    font-size: 15px;
+    color: $theme-light-blue-min;
+}

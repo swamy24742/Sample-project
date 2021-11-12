@@ -1,0 +1,82 @@
+<div class="cb-layout pb-2">
+  <app-bread-crumb [page]="currentPage"></app-bread-crumb>
+  <h1 class="cb-heading my-4">Reinsurance/Treaty Code Maintenance</h1>
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <button *ngIf="hasValidPermission" type="button" class="btn cb-btn-large cb-btn-primary"
+        (click)="handleAddTreaty()">
+        <img src="assets/Icons/plus.svg" class="cb-plus-icon" alt="">
+        Add New Treaty</button>
+    </div>
+    <div class="col-md-8">
+      <app-search [page]="searchParam" (onSearch)="triggerSearch($event)"></app-search>
+    </div>
+
+    <div class="col-md-12 mt-3">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">RI Agency</th>
+            <th scope="col">Ceded No</th>
+            <th scope="col">Calculation Method</th>
+            <th class="cb-agreement-col" scope="col">Agreement Type</th>
+            <th class="cb-treaty-name-col" scope="col">Reinsurer/Treaty Name</th>
+            <th scope="col">Trading Partner</th>
+            <th scope="col">Effective Date</th>
+            <th scope="col">Expiry Date</th>
+            <th *ngIf="hasValidPermission" scope="col">More Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of treatyList; let treatyIndex = index">
+
+            <td>
+              {{ item.riAgency }}
+            </td>
+            <td>
+              {{ item.cededNo }}
+            </td>
+            <td>
+              {{ item.calculatedBy | common : 'calcBy'}}
+            </td>
+            <td>
+              {{ item.agreementType+" - " }} {{item.agreementDescription }}
+            </td>
+            <td>{{ item.treatyName }}</td>
+            <td>{{ item.tradingPartner ? item.tradingPartner : '--' }}</td>
+            <td>{{ item.effectiveDate ? (item.effectiveDate | date: 'MM/dd/yyyy') : '--'}}</td>
+            <td>{{ item.expirationDate ? (item.expirationDate | date: 'MM/dd/yyyy') : '--'}}</td>
+            <td *ngIf="hasValidPermission">
+              <span class="mx-4" (click)="handleTreatyEdit(treatyIndex)">
+                <img src="assets/Icons/edit.svg" class="cb-icon cb-edit-icon" alt="">
+              </span>
+              <span class="ml-2"><img *ngIf="!item.isClaimsTagged" src="assets/Icons/delete.svg"
+                  (click)="handleDeleteTreaty(item.borisId)" class="cb-icon cb-delete-icon" alt=""></span>
+            </td>
+          </tr>
+          <td colspan="9" *ngIf="treatyList.length == 0 && dataLoaded && hasValidPermission" class="text-center">
+            No Records found
+          </td>
+          <td colspan="8" *ngIf="treatyList.length == 0 && dataLoaded && !hasValidPermission" class="text-center">
+            No Records found
+          </td>
+        </tbody>
+      </table>
+
+      <div class="row no-gutters mt-3">
+        <div class="col-md-6">
+          <p *ngIf="treatyList.length > 0" class="cb-page-display pt-2" [innerHTML]="pageOfDisplay"></p>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex justify-content-between float-right">
+            <app-pagination [maxSize]="4" [collectionSize]="collectionSize" [page]="page" [pageSize]="pageSize"
+              (pageChanged)="handlePagination($event)">
+            </app-pagination>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

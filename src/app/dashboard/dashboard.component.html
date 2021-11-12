@@ -1,0 +1,82 @@
+<div class="cb-layout pb-2">
+    <h1 class="cb-heading my-4">My Tasks</h1>
+    <div class="row py-1">
+        <div class="col-md cb-dash-container"  *ngFor="let item of accessTiles; let accessIndex = index"  [ngClass]="{'pl-0': (accessIndex === 1), 
+        'px-1': (accessIndex === 2)}">
+
+            <a [routerLink]="['/list-treaty']" *ngIf="item === 'Reinsurance/Treaty Code Maintenance'"
+                class="cb-dash-tile" (mouseover)="treaty=true" (mouseout)="treaty=false">
+                <div class="px-4 py-4">
+                    <div class="cb-tile-title">
+                        <p class="cb-dash-title">Reinsurance/Treaty</p>
+                        <p class="cb-dash-title">Maintenance Table</p>
+                    </div>
+                    <div class="py-2 cb-icon-sec">
+                        <img *ngIf="!treaty" src="assets/Icons/spaner.svg" class="cb-dash-icon" alt="">
+                        <img *ngIf="treaty" src="assets/Icons/span-dis.svg" class="cb-dash-icon" alt="">
+                    </div>
+                    <div class="mb-4">
+                        <span class="cb-dash-label">Permission: <span
+                                class="cb-dash-value">{{userConfig.accessDetails['Reinsurance/Treaty Code
+                                Maintenance']}}</span></span>
+                    </div>
+                </div>
+            </a>
+
+            <a [routerLink]="['/claims-tagging']" *ngIf="item === 'Claims Tagging'" class="cb-dash-tile" (mouseover)="claims=true" (mouseout)="claims=false">
+                <div class="px-4 py-4">
+                    <div class="cb-tile-title">
+                        <p class="cb-dash-title">Claims Tagging</p>
+                        <p class="cb-dash-title">for Reinsurance</p>
+                        <p class="cb-dash-title">Accounting</p>
+                    </div>
+                    <div class="py-2 cb-icon-sec">
+                        <img *ngIf="!claims" src="assets/Icons/file.svg" class="cb-dash-icon" alt="">
+                        <img *ngIf="claims" src="assets/Icons/file-dis.svg" class="cb-dash-icon" alt="">
+                    </div>
+                    <div class="mb-4">
+                        <span class="cb-dash-label">Permission: <span
+                                class="cb-dash-value">{{userConfig.accessDetails['Claims Tagging']}}</span></span>
+                    </div>
+                </div>
+            </a>
+
+            <a [routerLink]="['/user-list']" *ngIf="item === 'User Profile'" class="cb-dash-tile" (mouseover)="user=true" (mouseout)="user=false">
+                <div class="px-4 py-4">
+                    <div class="cb-tile-title">
+                        <p class="cb-dash-title">Manage</p>
+                        <p class="cb-dash-title">User Profile</p>
+                    </div>
+                    <div class="py-2 cb-icon-sec">
+                        <img *ngIf="!user" src="assets/Icons/pro.svg" class="cb-dash-icon" alt="">
+                        <img *ngIf="user" src="assets/Icons/pro-dis.svg" class="cb-dash-icon" alt="">
+                    </div>
+                    <div class="mb-4">
+                        <span class="cb-dash-label">Permission: <span
+                                class="cb-dash-value">{{userConfig.accessDetails['User Profile']}}</span></span>
+                    </div>
+                </div>
+            </a>
+
+            <a *ngIf="item === 'Policy Data'" class="cb-dash-tile" (mouseover)="policy=true" (mouseout)="policy=false">
+                <div class="px-4 py-4">
+                    <div class="cb-tile-title">
+                        <p class="cb-dash-title">Add New</p>
+                        <p class="cb-dash-title">Policy Data</p>
+                    </div>
+                    <div class="py-2 cb-icon-sec">
+                        <img *ngIf="!policy" src="assets/Icons/policy.svg" class="cb-dash-icon" alt="">
+                        <img *ngIf="policy" src="assets/Icons/policy-dis.svg" class="cb-dash-icon" alt="">
+                    </div>
+                    <div class="mb-4">
+                        <span class="cb-dash-label">Permission: <span
+                                class="cb-dash-value">{{userConfig.accessDetails['Policy Data']}}</span></span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

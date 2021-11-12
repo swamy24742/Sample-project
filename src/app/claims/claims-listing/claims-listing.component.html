@@ -1,0 +1,121 @@
+<div class="cb-layout pb-2">
+  <app-bread-crumb [page]="currentPage"></app-bread-crumb>
+  <h1 class="cb-heading my-4">Claims Tagging for Reinsurance Accounting</h1>
+  <div class="row no-gutters">
+    <div class="col-md-12 mb-4">
+      <app-claims-search (onSearch)="triggerSearch($event)"></app-claims-search>
+    </div>
+    <div class="col-md-12 mt-2 cb-global-claims">
+      <div class="float-right cb-claims-tag-container" *ngIf="(selectedClaims.length > 0) && hasValidPermission">
+        <app-claims-tag [claimsConfig]="claimsTagGlobalConfig" [index]="-1"
+          (toggleClaims)="handleClaimsToggle($event)" (claimsTagTrigger)="handleClaimsTrigger($event)"></app-claims-tag>
+      </div>
+    </div>
+
+    <div class="col-md-12 mt-2 cb-no-search py-4" *ngIf="searchMode">
+      <p class="cb-search-text">Enter data above to display claim records.</p>
+    </div>
+
+    <div class="col-md-12 cb-claims-list mt-4" *ngIf="!searchMode">
+      <table class="table cb-claims-table">
+        <thead>
+          <tr>
+            <th class="position-relative" scope="col" style="width:5%;">
+              <input type="checkbox" [checked]="claimsList.length === selectedClaims.length && claimsList.length > 0" name="todo" value="" (change)="onGlobalCheckBoxChange($event)" class="ml-2">
+              <img (click)="showFilter = !showFilter; $event.stopPropagation();" src="assets/Icons/gdrop.svg" class="cb-drop-icon" alt="">
+              <div [hidden]="!showFilter" class="cb-filter-tag">
+                <div class="cb-filter-item py-2" [ngClass]="{'cb-selected-filter' : (selectedFilter === 'tag')}" (click)="setFilter('tag'); $event.stopPropagation();">Tagged Claims</div>
+                <div class="cb-filter-item py-2" [ngClass]="{'cb-selected-filter' : (selectedFilter === 'untag')}" (click)="setFilter('untag'); $event.stopPropagation();">Untagged Claims</div>
+              </div>
+            </th>
+            <th scope="col" style="width:8%;">Claim No.</th>
+            <th scope="col" style="width:7%;">Policy No.</th>
+            <th class="cb-treaty-name-col" scope="col" style="width:8%;">Date of Loss</th>
+            <th scope="col" style="width:10%;">Effective Date</th>
+            <th scope="col" style="width:8%;">Expiry Date</th>
+            <th class="cb-agreement-col" style="width:10%;" scope="col">LOB</th>
+            <th class="cb-agreement-col" style="width:9%;" scope="col">Net Incurred</th>
+            <th scope="col" style="width:25%; text-align:center;">Reinsurance Treaty</th>
+            <th scope="col" style="width:10%;">More Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of claimsList; let claimsIndex = index; let even=even">
+            <tr>
+              <td class="cb-row-check">
+                <input type="checkbox" (change)="onItemCheckBoxChange($event, item.claimNo, claimsIndex)" name="todo" value="{{item.claimNo}}" [checked]="item.isChecked" class="ml-2">
+              </td>
+              <td>
+                {{ item.claimNo }}
+              </td>
+              <td>
+                {{ item.policyNo}}
+              </td>
+              <td>{{ item.dateOfLoss ? (item.dateOfLoss | date: 'MM/dd/yyyy') : '--'}}</td>
+              <td>{{ item.effectiveDate ? (item.effectiveDate | date: 'MM/dd/yyyy') : '--'}}</td>
+              <td>{{ item.expirationDate ? (item.expirationDate | date: 'MM/dd/yyyy') : '--'}}</td>
+              <td>
+                {{ item.lineOfBusiness }}
+              </td>
+              <td>
+                <div *ngIf="item.netIncurred">{{item.netIncurred | currency}}</div>
+                <div *ngIf="!item.netIncurred" class="text-center">--</div>
+              </td>
+              <td>
+                <app-claims-tag [claimsConfig]="item.tagData" [index]="claimsIndex"
+                (toggleClaims)="handleClaimsToggle($event)" (claimsTagTrigger)="handleClaimsTrigger($event)"></app-claims-tag>
+              </td>
+              <td>
+                <div class="position-relative">
+                  <span class="cb-toggle-search ml-4 pl-2">
+                    <div class="cb-search-circle position-relative" (click)="item.tagData.showDetail = !item.tagData.showDetail">
+                      <img *ngIf="item.tagData.showDetail" src="assets/Icons/up.svg" class="cb-up-icon" alt="">
+                      <img *ngIf="!item.tagData.showDetail" src="assets/Icons/down.svg" class="cb-down-icon" alt="">
+                    </div>
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr class="tid-detail-row" [hidden]="!item.tagData.showDetail">
+              <td class="cb-border-none" colspan="10">
+                <div class="row no-gutters ">
+                  <div class="col-md-2 cb-sbu">
+                    <span class="cb-claims-label">SBU :</span><span class="cb-claims-value"> {{item.sbu}}</span>
+                  </div>
+                  <div class="col-md-3 cb-gross">
+                    <span class="cb-claims-label">Gross Incurred:</span>
+                    <span class="cb-claims-value pl-1">
+                      {{ item.grossIncurred ? (item.grossIncurred | currency) : '--'}}
+                    </span>  
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+          </ng-container>
+          <tr *ngIf="claimsList.length == 0 && dataLoaded">
+            <td colspan="10" class="text-center">
+              No Records found
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="row no-gutters mt-3">
+        <div class="col-md-6">
+          <p *ngIf="claimsList.length > 0" class="cb-page-display pt-2" [innerHTML]="pageOfDisplay"></p>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex justify-content-between float-right">
+            <app-pagination [maxSize]="4" [collectionSize]="collectionSize" [page]="page" [pageSize]="pageSize"
+              (pageChanged)="handlePagination($event)">
+            </app-pagination>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

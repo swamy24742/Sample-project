@@ -1,0 +1,21 @@
+@import 'variables';
+
+.cb-error-msg{
+    font-size: 28px;
+    color: $theme-dark-blue;
+}
+
+.cb-access-error{
+    padding-top: 15%;
+}
+
+.cb-login-label{
+    color: $theme-dark-blue;
+    font-size: 16px;
+}
+
+.cb-login-link{
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: bold;
+}

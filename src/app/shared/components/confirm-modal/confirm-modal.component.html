@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h2 class="modal-title cb-modal-title"><b class="cb-head-title">{{confirmModalLabels.title}}</b></h2>
+    <button type="button" class="close cb-no-border" data-dismiss="modal" (click)="closeModal(); $event.stopPropagation();">
+        <span class="cb-modal-close" aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row mt-1">
+        <div class="col-12 mb-2 text-center">
+            <p class="cb-confirm-txt">{{confirmModalLabels.msg}}</p>
+        </div>
+        <div class="col-12 my-2 text-center">
+            <button type="button" class="btn cb-btn cb-btn-cancel cb-btn-light"
+                (click)="handleStatusModal('cancel'); $event.stopPropagation();">{{confirmModalLabels.cancelTxt}}</button>
+            <button type="button" class="btn cb-btn cb-btn-save cb-btn-secondary ml-2"
+                (click)="handleStatusModal('proceed'); $event.stopPropagation();">{{confirmModalLabels.confirmTxt}}</button>
+        </div>
+    </div>
+
+</div>

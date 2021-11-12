@@ -1,0 +1,96 @@
+trigger:
+- qa
+
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureSubscription: 'e67678a2-07de-4746-bd2d-0152155393ac'
+
+  # Web App name
+  webAppName: 'borisqa'
+  # Pool  name
+  pool: 'ZADEPrivateAgentWindows01'
+  # Agent  name
+  agent: 'ZNAPCDP2584V'
+
+
+
+stages:
+- stage: Build
+  displayName: Build stage
+
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      name: $(pool)
+      demands: Agent.Name -equals $(agent)
+
+    steps:
+    - task: NodeTool@0
+      displayName: 'Use Node version'
+      inputs:
+        versionSpec: '14.x'
+
+    - task: Npm@0
+      displayName: 'Install application dependencies'
+      inputs:
+        arguments: '--force'
+
+    - script: |
+        npm install 
+      displayName: 'Install Dependencies'
+
+    #- script: |
+        
+        #npx ng test --watch=false --karmaConfig karma.conf.js --code-coverage --browsers=ChromeHeadless
+      #displayName: 'perform unit tests'
+
+
+    - script: |
+        npm run ng build --configuration=qa --base-href"/UI/" 
+      displayName: 'Build the Project'
+
+    - task: CopyFiles@2
+      displayName: 'Copy files '
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)/dist'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: true
+
+
+    - task: ArchiveFiles@1
+      displayName: 'Archive files '
+      inputs:
+        rootFolderorFile: '$(Build.ArtifactStagingDirectory)'
+        
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    environment: $(webAppName)
+    pool:
+      name: $(pool)
+      demands: Agent.Name -equals $(agent)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Deploy Azure App Service'
+            inputs:
+              azureSubscription: 'a08998n1q02-CAN-BORIS'
+              appType: 'Web App on Windows'
+              WebAppName: 'borisqa'
+              VirtualApplication: /UI
+              package: $(Pipeline.Workspace)/drop/UI
+              #WebConfigParameters: '-Handler iisnode -NodeStartFile server.js -appType node'
+              

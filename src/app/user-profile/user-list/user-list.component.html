@@ -1,0 +1,77 @@
+<div class="cb-layout pb-2">
+  <app-bread-crumb [page]="currentPage"></app-bread-crumb>
+  <h1 class="cb-heading my-4">Manage User Profile</h1>
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <button *ngIf="hasValidPermission" type="button" class="btn cb-btn-large cb-btn-primary"
+        (click)="handleAddUser()">
+        <img src="assets/Icons/plus.svg" class="cb-plus-icon" alt="">
+        Add New User</button>
+    </div>
+    <div class="col-md-8">
+      <app-search [page]="searchParam" (onSearch)="triggerSearch($event)"></app-search>
+    </div>
+
+    <div class="col-md-12 mt-3">
+      <table class="table cb-user-table">
+        <thead>
+          <tr>
+            <th scope="col" style="width:12%;">Name</th>
+            <th scope="col" style="width:12%;">GITDIR</th>
+            <th scope="col" style="width:22%;">Email Id</th>
+            <th class="cb-agreement-col" scope="col" style="width:22%;">Manager Email Id</th>
+            <th class="cb-user-name-col" scope="col" style="width:8%;">Status</th>
+            <th scope="col" style="width:14%;">System role</th>
+            <th *ngIf="hasValidPermission" scope="col" style="width:10%;">More actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of userList; let userIndex = index">
+
+            <td>
+              {{item.firstName}} {{item.lastName}}
+            </td>
+            <td>
+              {{item.userId}}
+            </td>
+            <td>{{ item.emailId }}</td>
+            <td>{{ item.managerEmailId}}</td>
+            <td>
+              {{item.isActive? 'Active' : 'In-Active'}}
+            </td>
+            <td>
+              {{ item.userCategory}}
+              <!-- {{ item.sysytemRole+" - " }} {{item.sysytemRoleDescription }} -->
+            </td>
+            <td *ngIf="hasValidPermission">
+              <span class="mx-4" (click)="handleUserEdit(userIndex)">
+                <img src="assets/Icons/edit.svg" class="cb-icon cb-edit-icon" alt="">
+              </span>
+            </td>
+          </tr>
+          <td colspan="7" *ngIf="userList.length == 0 && dataLoaded && hasValidPermission" class="text-center">
+            No Records found
+          </td>
+          <td colspan="6" *ngIf="userList.length == 0 && dataLoaded && !hasValidPermission" class="text-center">
+            No Records found
+          </td>
+        </tbody>
+      </table>
+
+      <div class="row no-gutters mt-3">
+        <div class="col-md-6">
+          <p *ngIf="userList.length > 0" class="cb-page-display pt-2" [innerHTML]="pageOfDisplay"></p>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex justify-content-between float-right">
+            <app-pagination [maxSize]="4" [collectionSize]="collectionSize" [page]="page" [pageSize]="pageSize"
+              (pageChanged)="handlePagination($event)">
+            </app-pagination>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

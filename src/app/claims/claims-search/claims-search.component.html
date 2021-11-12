@@ -1,0 +1,211 @@
+<div class="row no-gutters">
+    <div class="col-md-12">
+        <p class="cb-claims-heading">Search Claims to Tag the Treaties</p>
+    </div>
+    <div class="col-md-12 cb-search-container">
+        <div class="row justify-content-center">
+            <div class="col-md-11 py-3">
+                <form [formGroup]="searchForm" id="searchForm">
+                    <div class="row py-3">
+                        <div class="col-md mr-4">
+                            <div class="cb-left">
+                                <div>
+                                    <label> Claim No. </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <input class="" type="text" name="claimNo" placeholder=""
+                                        formControlName="claimNo" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md mx-4">
+                            <div class="cb-center">
+                                <div>
+                                    <label> Policy No. </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <input class="" type="text" name="policyNo" placeholder=""
+                                        formControlName="policyNo" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md ml-4">
+                            <div class="cb-right">
+                                <div>
+                                    <label> Line of Business </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                        <select class="cb-select" name="lineOfBznz" id="lineOfBznz" formControlName="lineOfBznz">
+                                            <option *ngFor="let ag of lineOfBusiness" [value]="ag.name">
+                                              {{ag.name}}
+                                            </option>
+                                          </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row py-3">
+                        <div class="col-md mr-4">
+                            <div class="cb-left">
+                                <div>
+                                    <label> Date of Loss </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <input type="text" class="cb-date" name="dateOfLoss" id="dateOfLoss"
+                                        placeholder="MM/DD/YYYY" angular-mydatepicker
+                                        #dpDateOfLoss="angular-mydatepicker" formControlName="dateOfLoss"
+                                        [options]="dateOfLossOptions" readonly (click)="dpDateOfLoss.toggleCalendar()"/>
+                                    <img *ngIf="searchForm.value.dateOfLoss" src="assets/Icons/close.svg" class="cb-icon cb-date-cross-icon" (click)="dpDateOfLoss.clearDate()" alt="">
+                                    <img src="assets/Icons/cal.svg" (click)="dpDateOfLoss.toggleCalendar()"
+                                        class="cb-icon cb-calendar-icon" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md mx-4">
+                            <div class="cb-center">
+                                <div>
+                                    <label> Effective Date </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <input type="text" class="cb-date" name="effectiveDate" id="effectiveDate"
+                                        placeholder="MM/DD/YYYY" angular-mydatepicker
+                                        #dpEffectiveDate="angular-mydatepicker" formControlName="effectiveDate"
+                                        [options]="effectiveDateOptions" readonly (click)="dpEffectiveDate.toggleCalendar()"/>
+                                        <img *ngIf="searchForm.value.effectiveDate" src="assets/Icons/close.svg" class="cb-icon cb-date-cross-icon" (click)="dpEffectiveDate.clearDate()" alt="">
+                                    <img src="assets/Icons/cal.svg" (click)="dpEffectiveDate.toggleCalendar()"
+                                        class="cb-icon cb-calendar-icon" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md ml-4">
+                            <div class="cb-right">
+                                <div>
+                                    <label> Expiry Date </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <input type="text" class="cb-date" name="expirationDate" id="expirationDate"
+                                        placeholder="MM/DD/YYYY" angular-mydatepicker
+                                        #dpExpirationDate="angular-mydatepicker" formControlName="expirationDate"
+                                        [options]="expiryDateOptions" readonly (click)="dpExpirationDate.toggleCalendar()"/>
+                                        <img *ngIf="searchForm.value.expirationDate" src="assets/Icons/close.svg" class="cb-icon cb-date-cross-icon" (click)="dpExpirationDate.clearDate()" alt="">
+                                        <img src="assets/Icons/cal.svg" (click)="dpExpirationDate.toggleCalendar()"
+                                        class="cb-icon cb-calendar-icon" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row py-3" [hidden]="minSearch">
+                        <div class="col-md mr-4">
+                            <div class="cb-left">
+                                <div>
+                                    <label> SBU </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <select class="cb-select" name="sbu" id="sbu" formControlName="sbu">
+                                        <option *ngFor="let ag of sbuDetails" [value]="ag.name">
+                                          {{ag.name}}
+                                        </option>
+                                      </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md mx-4">
+                            <div class="cb-center">
+                                <div>
+                                    <label> Gross Incurred Lesser Than </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <input class="" type="text" name="grossIncuredLesser" placeholder=""
+                                        formControlName="grossIncuredLesser" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md ml-4">
+                            <div class="cb-right">
+                                <div>
+                                    <label> Gross Incurred Greater Than </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <input class="" type="text" name="grossIncuredGreater" placeholder=""
+                                        formControlName="grossIncuredGreater" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row py-3" [hidden]="minSearch">
+                        <div class="col-md mr-4">
+                            <div class="cb-left">
+                                <div>
+                                    <label> Net Incurred Lesser Than </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <input class="" type="text" name="netIncuredLesser" placeholder=""
+                                        formControlName="netIncuredLesser" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md mx-4">
+                            <div class="cb-center">
+                                <div>
+                                    <label> Net Incurred Greater Than </label>
+                                </div>
+                                <div class="input-group">
+                                    <!-- input box -->
+                                    <input class="" type="text" name="netIncuredGreater" placeholder=""
+                                        formControlName="netIncuredGreater" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md ml-4">
+                            <div class="cb-right">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-3">
+                        <div class="col-md mr-4" (click)="toggleSearch()">
+                            <div class="position-relative" [hidden]="!minSearch">
+                                <span class="cb-toggle-search mr-4">
+                                    <div class="cb-search-circle position-relative">
+                                        <img src="assets/Icons/down.svg" class="cb-down-icon" alt="">
+                                    </div>
+                                </span>
+                                <span class="cb-show-more cb-toggle-search">Show more criteria</span>
+                            </div>
+                            <div class="position-relative" [hidden]="minSearch">
+                                <span class="cb-toggle-search mr-4">
+                                    <div class="cb-search-circle position-relative">
+                                        <img src="assets/Icons/up.svg" class="cb-up-icon" alt="">
+                                    </div>
+                                </span>
+                                <span class="cb-show-more cb-toggle-search">Show less criteria</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-3 float-right">
+                        <div class="col-md ml-4">
+                            <button type="button" class="btn cb-btn cb-btn-cancel cb-btn-light" data-dismiss="modal"
+                                (click)="clearSearch()">Clear</button>
+                            <button type="button" class="btn cb-btn cb-btn-save cb-btn-secondary ml-2"
+                                (click)="triggerSearch()">Search</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

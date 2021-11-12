@@ -1,0 +1,94 @@
+@import 'variables';
+
+a.cb-dash-tile{
+    display: block;
+    text-decoration: none;
+    border: 1px solid $theme-dark-blue;
+    border-radius: 8px;
+    cursor: pointer;
+    color: $theme-dark-gray;
+    background: $theme-white;
+    min-height: 384px;
+}
+.cb-dash-container{
+    max-width: 25%;
+}
+a.cb-dash-tile:hover{
+    background: $theme-dark-blue;
+    color: $theme-light-gray;
+    text-decoration: none;
+}
+
+.cb-dash-title{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.cb-dash-label{
+    font-size: 16px;
+    padding-left:5px;
+}
+
+.cb-dash-value{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.cb-dash-icon{
+    width: 75px;
+    height: 75px;
+}
+
+.cb-icon-sec{
+    margin-bottom: 20%;
+}
+
+.cb-tile-title{
+    height: 120px;
+    // min-height: 145px;
+    margin-bottom: 10%;
+}
+
+@media only screen and (max-width: 1120px){
+    
+    .cb-dash-title{
+        font-size: 22px;
+    }
+}
+
+@media only screen and (min-width: 1536px) and (max-width: 1920px) {
+    .cb-dash-title{
+        font-size: 28px;
+    }
+    .cb-dash-value{
+        font-size: 20px;
+    }
+    .cb-dash-label{
+        font-size: 20px;
+    }
+
+    .cb-dash-icon{
+        width: 90px;
+        height: 90px;
+    }
+}
+
+@media only screen and (min-width: 1921px){
+    .cb-dash-title{
+        font-size: 32px;
+    }
+
+    .cb-dash-value{
+        font-size: 22px;
+    }
+
+    .cb-dash-label{
+        font-size: 22px;
+    }
+
+    .cb-dash-icon{
+        width: 105px;
+        height: 105px;
+    }
+}

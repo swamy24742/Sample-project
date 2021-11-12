@@ -1,0 +1,202 @@
+<div class="float-right cb-search-container">
+  <div class="input-group">
+    <!-- input box -->
+    <input class="cb-search" type="text" style="font-family:Arial, FontAwesome" placeholder="&#xF002; Search"
+      [formControl]="searchFilter" (focus)="onFocusEvent($event)" (focusout)="onFocusOutEvent($event)" maxlength="42" />
+    <img [hidden]="!showFilterIcon" (click)="toggleFilter(); $event.stopPropagation();" src="assets/Icons/filter.svg"
+      class="cb-icon cb-filter-icon" alt="">
+      <img *ngIf="searchFilter.value.length > 0" (click)="clearSearchInput(); $event.stopPropagation();" src="assets/Icons/close.svg" class="cb-icon cb-cross-icon" alt="">
+    <div class="cb-filter-sec" *ngIf="showFilter" (click)="$event.stopPropagation()">
+      <form [formGroup]="searchForm">
+
+        <div *ngIf="page === 'treaty'">
+          <div class="row no-gutters">
+            <div class="col-md-12 cb-title-sec">
+              <p class="cb-search-title px-3 pt-2 pb-1">Advanced Search</p>
+            </div>
+          </div>
+          <div class="row no-gutters px-3 pt-3">
+            <div class="col-md-6">
+              <span class="cb-label">RI Agency</span>
+            </div>
+            <div class="col-md-6">
+              <input class="" formControlName="RIAgency" type="text" maxlength="5" placeholder="" />
+            </div>
+          </div>
+
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Ceded No</span>
+            </div>
+            <div class="col-md-6">
+              <input class="" formControlName="CededNo" type="text" maxlength="4" placeholder="" />
+            </div>
+          </div>
+
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Calculation Method</span>
+            </div>
+            <div class="col-md-6">
+              <select class="cb-select" (change)="changeCalculationType()" name="calculationMethod"
+                id="calculationMethod" formControlName="calculationValue">
+                <option *ngFor="let cl of calculationType" [value]="cl.key">{{cl.value}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Agreement Type</span>
+            </div>
+            <div class="col-md-6">
+              <select class="cb-select" name="agreementType" id="agreementType" formControlName="agreementType">
+                <option *ngFor="let ag of agreementType" [value]="ag.typeCode">
+                  {{(ag.typeCode !== "") ? (ag.typeCode+" - "+ag.description) : ag.description}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Reinsurer/Treaty Name</span>
+            </div>
+            <div class="col-md-6">
+              <input class="" formControlName="treatyName" type="text" placeholder="" maxlength="100" />
+            </div>
+          </div>
+
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Trading Partner</span>
+            </div>
+            <div class="col-md-6">
+              <input class="" formControlName="TradingPartner" type="text" placeholder="" maxlength="40" />
+            </div>
+          </div>
+
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Effective Date</span>
+            </div>
+            <div class="input-group col-md-6">
+              <input type="text" class="cb-date" name="effectiveDate" angular-mydatepicker
+                formControlName="treatyEffectiveDate" #dpEffectiveDate="angular-mydatepicker"
+                [options]="effectiveDateOptions" (dateChanged)="onDateChanged($event)" readonly
+                (click)="dpEffectiveDate.toggleCalendar()" />
+              <img *ngIf="searchForm.value.treatyEffectiveDate" src="assets/Icons/close.svg"
+                class="cb-icon cb-date-cross-icon" (click)="dpEffectiveDate.clearDate()" alt="">
+              <img src="assets/Icons/cal.svg" (click)="dpEffectiveDate.toggleCalendar()"
+                class="cb-icon cb-calendar-icon" alt="">
+            </div>
+          </div>
+
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Expiry Date</span>
+            </div>
+            <div class="input-group col-md-6">
+              <input type="text" class="cb-date" name="expiryDate" angular-mydatepicker
+                formControlName="treatyExpirationDate" #dpExpiryDate="angular-mydatepicker"
+                [options]="expiryDateOptions" (dateChanged)="onDateChanged($event)" readonly
+                (click)="dpExpiryDate.toggleCalendar()" />
+              <img *ngIf="searchForm.value.treatyExpirationDate" src="assets/Icons/close.svg"
+                class="cb-icon cb-date-cross-icon" (click)="dpExpiryDate.clearDate()" alt="">
+              <img src="assets/Icons/cal.svg" (click)="dpExpiryDate.toggleCalendar()" class="cb-icon cb-calendar-icon"
+                alt="">
+            </div>
+          </div>
+        </div>
+
+
+        <div *ngIf="page === 'user'">
+          <div class="row no-gutters">
+            <div class="col-md-12 cb-title-sec">
+              <p class="cb-search-title px-3 pt-2 pb-1">Advanced Search</p>
+            </div>
+          </div>
+          <div class="row no-gutters px-3 pt-3">
+            <div class="col-md-6">
+              <span class="cb-label">First Name</span>
+            </div>
+            <div class="col-md-6">
+              <input class="" formControlName="firstName" type="text" placeholder="" />
+            </div>
+          </div>
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Last Name</span>
+            </div>
+            <div class="col-md-6">
+              <input class="" formControlName="lastName" type="text" placeholder="" />
+            </div>
+          </div>
+
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">GITDIR ID</span>
+            </div>
+            <div class="col-md-6">
+              <input class="" formControlName="userId" type="text" placeholder="" />
+            </div>
+          </div>
+
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Email Id</span>
+            </div>
+            <div class="col-md-6">
+              <input class="" formControlName="emailId" type="text" placeholder="" />
+            </div>
+          </div>
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">Manager Email Id</span>
+            </div>
+            <div class="col-md-6">
+              <input class="" formControlName="managerEmailId" type="text" placeholder="" />
+            </div>
+          </div>
+          <div class="row no-gutters px-3 pt-1">
+            <div class="col-md-6">
+              <span class="cb-label">System Role</span>
+            </div>
+            <div class="col-md-6">
+              <select class="cb-select" name="userCategories" id="userCategories" formControlName="userCategory">
+                <option *ngFor="let role of userCategories" [value]="role.userCategoryId">
+                  {{role.category}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="row no-gutters px-3">
+            <div class="col-md-6">
+              <span class="cb-label">Status</span>
+            </div>
+            <div class="col-md-2 cb-switch">
+              <label class="switch">
+                <input type="checkbox" formControlName="isActive">
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <div class="col-md-4">
+              <span class="cb-label" *ngIf="searchForm.controls['isActive'].value"> Active </span>
+              <span class="cb-label" *ngIf="!searchForm.controls['isActive'].value"> In-Active </span>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="row no-gutters px-3 py-3 float-right">
+          <div class="col-md-12">
+            <button type="button" (click)="resetModal()" class="btn cb-btn-small cb-btn-light">Clear</button>
+            <button type="button" (click)="handleSearch(false)"
+              class="btn cb-btn-small cb-btn-secondary ml-2">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
